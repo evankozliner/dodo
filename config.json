@@ -1,0 +1,12 @@
+{
+	"cutoff": {
+		"weeks": "0",
+		"days": "0",
+		"hours": "0",
+		"minutes": "5"
+	},
+	"exclude_retweets": "false",
+	"search_term": "",
+	"tweets_per_request": "100",
+	"WOEID": "2383660"
+}

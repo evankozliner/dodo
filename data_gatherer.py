@@ -2,27 +2,37 @@ from twitter import Twitter, OAuth2, TwitterHTTPError, oauth2_dance
 from os import environ
 from datetime import datetime, timedelta
 from dateutil import parser
+import json
 
 def main():
     """ By Evan Kozliner & Wilfred Denton
-    Gathers tweets to train a machine learning model on. """
+    Gathers tweets to train a machine learning model on by fetching tweets before the 
+    current time."""
     tweet_ids = set([])
     tweets_csv = open("tweets.csv", "w+")
     metadata_file = open("metadata.csv", "w+")
-    WOEID = 2383660 # Yahoo Where On Earth ID for Columbus 
+    config = json.load(open("config.json"))
+    WOEID = int(config["WOEID"])
     total_tweets_fetched = 0
-    min_tweet_id = 0
     cutoff_day_reached = False
     timeline_specifier = ""
-    NUMBER_OF_TWEETS_TO_FETCH = 100
+    NUMBER_OF_TWEETS_TO_FETCH = int(config["tweets_per_request"]) 
     # Using 1 day ago as the cutoff time
-    cutoff_date = datetime.utcnow() - timedelta(hours=3)
+    cutoff_conf = config["cutoff"]
+    time_diff = timedelta(hours=int(cutoff_conf["hours"]), 
+            minutes=int(cutoff_conf["minutes"]),
+            days=int(cutoff_conf["days"]),
+            weeks=int(cutoff_conf["weeks"]))
+    cutoff_date = datetime.utcnow() - time_diff
+    bool(config["exclude_retweets"])
+    rt_str = ("exclude:retweets " if config["exclude_retweets"] == 'true' else "")
 
     twitter = get_twitter_env()
-    top_trend_hashtag = get_top_trend(twitter, WOEID)
+    search_term = (config["search_term"].encode('utf-8') if bool(config['search_term']) \
+            else get_top_trend(twitter, WOEID))
 
     while not cutoff_day_reached:
-        tweets = query_twitter(timeline_specifier + "exclude:retweets " + top_trend_hashtag,
+        tweets = query_twitter(timeline_specifier + rt_str + search_term,
                 twitter, NUMBER_OF_TWEETS_TO_FETCH)
         total_tweets_fetched += len(tweets) 
         for tweet in tweets:
@@ -31,7 +41,7 @@ def main():
         timeline_specifier = "max_id:" + str(min(tweet_ids)) + " " 
         cutoff_day_reached = was_cutoff_reached(tweets, cutoff_date)
 
-    metadata_file.write("hashtag_searched," + top_trend_hashtag + "\n")
+    metadata_file.write("hashtag_searched," + search_term + "\n")
     metadata_file.write("tweets_fetched," + str(total_tweets_fetched) + "\n")
     metadata_file.write("woeid," + str(WOEID) + "\n")
     metadata_file.write("max_tweet," + str(max(tweet_ids)) + "\n")
@@ -41,9 +51,10 @@ def main():
     metadata_file.close()
 
 def was_cutoff_reached(tweets, cutoff_date):
+    """ Tests if one of the tweets time is before the cutoff date"""
     for tweet in tweets:
         date = parser.parse(tweet['created_at'].encode('utf-8')).replace(tzinfo=None)
-        #print date.strftime("%H:%M:%S")
+        print date.strftime("%H:%M:%S")
         if cutoff_date > date:
             return True
     return False
