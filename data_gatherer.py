@@ -2,12 +2,14 @@ from twitter import Twitter, OAuth2, TwitterHTTPError, oauth2_dance
 from os import environ
 from datetime import datetime, timedelta
 from dateutil import parser
+from time import time
 import json
 
 def main():
     """ By Evan Kozliner & Wilfred Denton
     Gathers tweets to train a machine learning model on by fetching tweets before the 
     current time."""
+    start_time = time()
     tweet_ids = set([])
     tweets_csv = open("tweets.csv", "w+")
     metadata_file = open("metadata.csv", "w+")
@@ -16,7 +18,8 @@ def main():
     total_tweets_fetched = 0
     cutoff_day_reached = False
     timeline_specifier = ""
-    NUMBER_OF_TWEETS_TO_FETCH = int(config["tweets_per_request"]) 
+    num_tweets = int(config["tweets_per_request"]) 
+    num_requests = 0
     # Using 1 day ago as the cutoff time
     cutoff_conf = config["cutoff"]
     time_diff = timedelta(hours=int(cutoff_conf["hours"]), 
@@ -33,7 +36,8 @@ def main():
 
     while not cutoff_day_reached:
         tweets = query_twitter(timeline_specifier + rt_str + search_term,
-                twitter, NUMBER_OF_TWEETS_TO_FETCH)
+                twitter, num_tweets)
+        num_requests += 1
         total_tweets_fetched += len(tweets) 
         for tweet in tweets:
             tweet_ids.add(tweet['id'])
@@ -46,6 +50,8 @@ def main():
     metadata_file.write("woeid," + str(WOEID) + "\n")
     metadata_file.write("max_tweet," + str(max(tweet_ids)) + "\n")
     metadata_file.write("min_tweet," + str(min(tweet_ids)) + "\n")
+    metadata_file.write("time_minutes," + str((time() - start_time)/60) + "\n")
+    metadata_file.write("requests," + str(num_requests) + "\n")
     test_duplicates(tweet_ids, total_tweets_fetched)
     tweets_csv.close()
     metadata_file.close()
@@ -54,7 +60,7 @@ def was_cutoff_reached(tweets, cutoff_date):
     """ Tests if one of the tweets time is before the cutoff date"""
     for tweet in tweets:
         date = parser.parse(tweet['created_at'].encode('utf-8')).replace(tzinfo=None)
-        print date.strftime("%H:%M:%S")
+        #print date.strftime("%H:%M:%S")
         if cutoff_date > date:
             return True
     return False
