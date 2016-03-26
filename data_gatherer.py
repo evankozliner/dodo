@@ -41,7 +41,7 @@ def main():
         total_tweets_fetched += len(tweets) 
         for tweet in tweets:
             tweet_ids.add(tweet['id'])
-            tweets_csv.write(str(tweet['text'].encode('utf-8')) + "\n")
+            tweets_csv.write(tweet['text'].encode('utf-8').replace('\n', '\t') + "\n")
         timeline_specifier = "max_id:" + str(min(tweet_ids)) + " " 
         cutoff_day_reached = was_cutoff_reached(tweets, cutoff_date)
 
