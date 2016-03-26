@@ -3,6 +3,7 @@ from os import environ
 from datetime import datetime, timedelta
 from dateutil import parser
 from time import time
+import csv
 import json
 
 def main():
@@ -11,7 +12,8 @@ def main():
     current time."""
     start_time = time()
     tweet_ids = set([])
-    tweets_csv = open("tweets.csv", "w+")
+    tweets_csv = open("tweets.csv", "w")
+    writer = csv.writer(tweets_csv, lineterminator="\n")
     metadata_file = open("metadata.csv", "w+")
     config = json.load(open("config.json"))
     WOEID = int(config["WOEID"])
@@ -34,6 +36,7 @@ def main():
     search_term = (config["search_term"].encode('utf-8') if bool(config['search_term']) \
             else get_top_trend(twitter, WOEID))
 
+    #writer.writerow("body") # body line to match example
     while not cutoff_day_reached:
         tweets = query_twitter(timeline_specifier + rt_str + search_term,
                 twitter, num_tweets)
@@ -41,7 +44,13 @@ def main():
         total_tweets_fetched += len(tweets) 
         for tweet in tweets:
             tweet_ids.add(tweet['id'])
+            #writer.writerow(tweet['text'].encode('utf-8').replace('\n', '\t') + "\n")
+            #writer.writerow([tweet['text'].encode('utf-8').replace('\n', '\t')])
+            #writer.writerow([tweet['text'].encode('utf-8')])
             tweets_csv.write(tweet['text'].encode('utf-8').replace('\n', '\t') + "\n")
+
+            #if "\n" in tweet['text']:
+            #    tweets_csv.write("'" + tweet['text'].encode('utf-8')
         timeline_specifier = "max_id:" + str(min(tweet_ids)) + " " 
         cutoff_day_reached = was_cutoff_reached(tweets, cutoff_date)
 
