@@ -30,7 +30,7 @@ def main():
     bool(config["exclude_retweets"])
     rt_str = ("exclude:retweets " if config["exclude_retweets"] == 'true' else "")
 
-    twitter = get_twitter_env()
+    twitter = application_level_auth()
     search_term = (config["search_term"].encode('utf-8') if bool(config['search_term']) \
             else get_top_trend(twitter, WOEID))
 
@@ -77,7 +77,7 @@ def get_top_trend(twitter, WOEID):
     trends = twitter.trends.place(_id = WOEID)
     return trends[0]['trends'][0]['name'].encode('utf-8')
 
-def get_twitter_env():
+def application_level_auth():
     """ Uses environment variables to get an application-level authentication from twitter. """
     CONSUMER_KEY = environ.get('BOT_CONSUMER_KEY')
     CONSUMER_SECRET = environ.get('BOT_CONSUMER_SECRET')
