@@ -50,7 +50,7 @@ def main():
             #writer.writerow([tweet['text'].encode('utf-8').replace('\n', '\t')])
             #writer.writerow([tweet['text'].encode('utf-8')])
             # tweets_csv.write(tweet['text'].encode('utf-8').replace('\n', '\t') + "\n")
-            tweet_text = tweet['text'].encode('utf-8')
+            tweet_text = tweet['text'].encode('utf-8') + '\n---------\n'
             tweets_txt.write(tweet_text)
             b = bytearray()
             b.extend(tweet_text)
