@@ -16,7 +16,7 @@ def main():
     tweet_ids = set([])
     # tweets_csv = open("tweets.csv", "w")
     # writer = csv.writer(tweets_csv, lineterminator="\n")
-    tweets_txt = open("char-rnn/data/tweets/input.txt", "w")
+    tweets_txt = open("data/tweets/input.txt", "w")
     metadata_file = open("metadata.csv", "w+")
     config = json.load(open("config.json"))
     WOEID = int(config["WOEID"])
