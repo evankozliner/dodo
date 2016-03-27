@@ -72,10 +72,10 @@ def main():
     # tweets_csv.close()
     tweets_txt.close()
     metadata_file.close()
-    training_proc = subprocess.call(["th", "char-nn/train.lua", "-max_epochs", "5", "-print_every", "100"])
+    training_proc = subprocess.call(["th", "/home/ubuntu/dodo/char-nn/train.lua", "-max_epochs", "5", "-print_every", "100"])
     model_filename = max(glob.iglob(path.join('char-rnn', 'cv', '*.t7')), key=path.getctime)
     print model_filename
-    generation_proc = subprocess.call(["th", "char-rnn/sample.lua", "char-rnn/cv/" + model_filename, ">>", "sample.txt"])
+    generation_proc = subprocess.call(["th", "/home/ubuntu/dodo/char-rnn/sample.lua", "/home/ubuntu/dodo/char-rnn/cv/" + model_filename, ">>", "/home/ubuntu/dodo/sample.txt"])
 
 def was_cutoff_reached(tweets, cutoff_date):
     """ Tests if one of the tweets time is before the cutoff date"""
