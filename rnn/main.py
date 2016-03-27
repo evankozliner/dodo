@@ -8,8 +8,8 @@ from gru_theano import *
 import sys
 
 # Load data (this may take a few minutes)
-VOCABULARY_SIZE = 2000
-X_train, y_train, word_to_index, index_to_word = load_data("data/1900_tweets.csv", VOCABULARY_SIZE)
+VOCABULARY_SIZE = 500
+X_train, y_train, word_to_index, index_to_word = load_data("data/1900_tweets_short.csv", VOCABULARY_SIZE)
 
 # Build your own model (not recommended unless you have a lot of time!)
 
