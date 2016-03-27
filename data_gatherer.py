@@ -1,10 +1,12 @@
 from twitter import Twitter, OAuth2, TwitterHTTPError, oauth2_dance
-from os import environ
+from os import environ, path
 from datetime import datetime, timedelta
 from dateutil import parser
 from time import time
 import csv
 import json
+import subprocess
+import glob
 
 def main():
     """ By Evan Kozliner & Wilfred Denton
@@ -70,6 +72,10 @@ def main():
     # tweets_csv.close()
     tweets_txt.close()
     metadata_file.close()
+    training_proc = subprocess.call(["th", "char-nn/train.lua", "-max_epochs", "5", "-print_every", "100"])
+    model_filename = max(glob.iglob(path.join('char-rnn', 'cv', '*.t7')), key=path.getctime)
+    print model_filename
+    generation_proc = subprocess.call(["th", "char-rnn/sample.lua", "char-rnn/cv/" + model_filename, ">>", "sample.txt"])
 
 def was_cutoff_reached(tweets, cutoff_date):
     """ Tests if one of the tweets time is before the cutoff date"""
