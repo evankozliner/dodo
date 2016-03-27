@@ -37,7 +37,7 @@ def main():
     search_term = (config["search_term"].encode('utf-8') if bool(config['search_term']) else get_top_trend(twitter, WOEID))
     data_size = 0
     #writer.writerow("body") # body line to match example
-    while not cutoff_day_reached and data_size < int(2e3):
+    while not cutoff_day_reached and data_size < int(2e6):
         tweets = query_twitter(timeline_specifier + rt_str + search_term,
                 twitter, num_tweets)
         num_requests += 1
