@@ -1,0 +1,12 @@
+Reading CSV file...
+Parsed 1148 sentences.
+Found 5344 unique words tokens.
+Using vocabulary size 2000.
+The least frequent word in our vocabulary is 'u'sizes' and appeared 1 times.
+SGD Step time: ~628.474951 milliseconds
+epoch: 0
+tweet: 0
+tweet: 100
+tweet: 200
+tweet: 300
+tweet: 400

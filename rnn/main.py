@@ -14,8 +14,8 @@ X_train, y_train, word_to_index, index_to_word = load_data("data/1900_tweets.csv
 # Build your own model (not recommended unless you have a lot of time!)
 
 LEARNING_RATE = 1e-3
-NEPOCH = 20
-HIDDEN_DIM = 128
+NEPOCH = 1
+HIDDEN_DIM = 100
 
 model = GRUTheano(VOCABULARY_SIZE, HIDDEN_DIM)
 

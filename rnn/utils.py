@@ -164,6 +164,7 @@ def generate_sentence(model, index_to_word, word_to_index, min_length=5):
     # Repeat until we get an end token
     while not new_sentence[-1] == word_to_index[SENTENCE_END_TOKEN]:
         next_word_probs = model.predict(new_sentence)[-1]
+	next_word_probs *= 1.0/next_word_probs.sum()
         samples = np.random.multinomial(1, next_word_probs)
         sampled_word = np.argmax(samples)
         new_sentence.append(sampled_word)
