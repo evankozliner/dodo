@@ -105,7 +105,7 @@ def load_model_parameters_theano(path, modelClass=GRUTheano):
     model.V.set_value(V)
     model.b.set_value(b)
     model.c.set_value(c)
-    return model 
+    return model
 
 def gradient_check_theano(model, x, y, h=0.001, error_threshold=0.01):
     # Overwrite the bptt attribute. We need to backpropagate all the way to get the correct gradient
@@ -148,7 +148,7 @@ def gradient_check_theano(model, x, y, h=0.001, error_threshold=0.01):
                 print "Estimated_gradient: %f" % estimated_gradient
                 print "Backpropagation gradient: %f" % backprop_gradient
                 print "Relative Error: %f" % relative_error
-                return 
+                return
             it.iternext()
         print "Gradient check for parameter %s passed." % (pname)
 
