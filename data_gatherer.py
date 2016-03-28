@@ -83,7 +83,7 @@ def main():
         remove('sample.txt')
         models = glob.glob('cv/*')
         for m in models:
-            os.remove(m)
+            remove(m)
 
 def was_cutoff_reached(tweets, cutoff_date):
     """ Tests if one of the tweets time is before the cutoff date"""
