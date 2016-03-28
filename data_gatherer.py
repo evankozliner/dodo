@@ -3,10 +3,12 @@ from os import environ, path
 from datetime import datetime, timedelta
 from dateutil import parser
 from time import time
+from pull_tweet import pull_tweet
 import csv
 import json
 import subprocess
 import glob
+import tweeter
 
 def main():
     """ By Evan Kozliner & Wilfred Denton
@@ -55,7 +57,6 @@ def main():
             b = bytearray()
             b.extend(tweet_text)
             data_size += len(b)
-
             #if "\n" in tweet['text']:
             #    tweets_csv.write("'" + tweet['text'].encode('utf-8')
         timeline_specifier = "max_id:" + str(min(tweet_ids)) + " "
@@ -76,6 +77,8 @@ def main():
     model_filename = max(glob.iglob(path.join('cv', '*.t7')), key=path.getctime)
     print model_filename
     generation_proc = subprocess.call("th sample.lua " + model_filename + " >> sample.txt", shell=True)
+    tweet = pull_tweet()
+    tweeter.tweet(tweet)
 
 def was_cutoff_reached(tweets, cutoff_date):
     """ Tests if one of the tweets time is before the cutoff date"""
