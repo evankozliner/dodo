@@ -1,5 +1,5 @@
 from twitter import Twitter, OAuth2, TwitterHTTPError, oauth2_dance
-from os import environ, path
+from os import environ, path, remove
 from datetime import datetime, timedelta
 from dateutil import parser
 from time import time
@@ -80,6 +80,10 @@ def main():
         generation_proc = subprocess.call("th sample.lua " + model_filename + " >> sample.txt", shell=True)
         tweet = pull_tweet()
         tweeter.tweet(tweet)
+        remove('sample.txt')
+        models = glob.glob('cv/*')
+        for m in models:
+            os.remove(m)
 
 def was_cutoff_reached(tweets, cutoff_date):
     """ Tests if one of the tweets time is before the cutoff date"""
