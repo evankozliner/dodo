@@ -74,7 +74,7 @@ def main():
         # tweets_csv.close()
         tweets_txt.close()
         metadata_file.close()
-        training_proc = subprocess.call("th train.lua -data_dir data/tweets -max_epochs 5 -print_every 100", shell=True)
+        training_proc = subprocess.call("th train.lua -data_dir data/tweets -max_epochs 25 -print_every 100", shell=True)
         model_filename = max(glob.iglob(path.join('cv', '*.t7')), key=path.getctime)
         print model_filename
         generation_proc = subprocess.call("th sample.lua " + model_filename + " >> sample.txt", shell=True)
