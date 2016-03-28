@@ -2,8 +2,8 @@
 	"cutoff": {
 		"weeks": "0",
 		"days": "0",
-		"hours": "0",
-		"minutes": "5"
+		"hours": "1",
+		"minutes": "0"
 	},
 	"exclude_retweets": "false",
 	"search_term": "",
