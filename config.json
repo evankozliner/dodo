@@ -1,8 +1,8 @@
 {
 	"cutoff": {
 		"weeks": "0",
-		"days": "1",
-		"hours": "0",
+		"days": "0",
+		"hours": "8",
 		"minutes": "0"
 	},
 	"exclude_retweets": "false",
