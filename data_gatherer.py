@@ -49,7 +49,7 @@ def main():
             num_requests += 1
             total_tweets_fetched += len(tweets)
             for tweet in tweets:
-                if not re.match("RT\s", tweet):
+                if not re.match("RT\s", tweet['text']):
                     tweet_ids.add(tweet['id'])
                     #writer.writerow(tweet['text'].encode('utf-8').replace('\n', '\t') + "\n")
                     #writer.writerow([tweet['text'].encode('utf-8').replace('\n', '\t')])
