@@ -9,6 +9,7 @@ import json
 import subprocess
 import glob
 import tweeter
+import re
 
 def main():
     """ By Evan Kozliner & Wilfred Denton
