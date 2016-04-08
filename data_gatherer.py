@@ -48,18 +48,19 @@ def main():
             num_requests += 1
             total_tweets_fetched += len(tweets)
             for tweet in tweets:
-                tweet_ids.add(tweet['id'])
-                #writer.writerow(tweet['text'].encode('utf-8').replace('\n', '\t') + "\n")
-                #writer.writerow([tweet['text'].encode('utf-8').replace('\n', '\t')])
-                #writer.writerow([tweet['text'].encode('utf-8')])
-                # tweets_csv.write(tweet['text'].encode('utf-8').replace('\n', '\t') + "\n")
-                tweet_text = tweet['text'].encode('utf-8') + '\n---------\n'
-                tweets_txt.write(tweet_text)
-                b = bytearray()
-                b.extend(tweet_text)
-                data_size += len(b)
-                #if "\n" in tweet['text']:
-                #    tweets_csv.write("'" + tweet['text'].encode('utf-8')
+                if not re.match("RT\s", tweet):
+                    tweet_ids.add(tweet['id'])
+                    #writer.writerow(tweet['text'].encode('utf-8').replace('\n', '\t') + "\n")
+                    #writer.writerow([tweet['text'].encode('utf-8').replace('\n', '\t')])
+                    #writer.writerow([tweet['text'].encode('utf-8')])
+                    # tweets_csv.write(tweet['text'].encode('utf-8').replace('\n', '\t') + "\n")
+                    tweet_text = tweet['text'].encode('utf-8') + '\n---------\n'
+                    tweets_txt.write(tweet_text)
+                    b = bytearray()
+                    b.extend(tweet_text)
+                    data_size += len(b)
+                    #if "\n" in tweet['text']:
+                    #    tweets_csv.write("'" + tweet['text'].encode('utf-8')
             timeline_specifier = "max_id:" + str(min(tweet_ids)) + " "
             cutoff_day_reached = was_cutoff_reached(tweets, cutoff_date)
 
