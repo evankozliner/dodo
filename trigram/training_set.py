@@ -1,5 +1,7 @@
 import re
 import random
+import pickle
+import os
 
 class TrainingSet:
     def __init__(self, file):
@@ -27,6 +29,10 @@ class TrainingSet:
         return self.tokens
 
     def _generate_word_map(self):
+        if os.path.exists('word_map.dat'):
+            with open('word_map.dat') as w:
+                self.word_map = pickle.load(w)
+            return
         tokens = self._tokenize_source()
         while len(tokens) > 2:
             duple = tuple(tokens[0:2])
@@ -35,3 +41,5 @@ class TrainingSet:
             else:
                 self.word_map[duple].append(tokens[2])
             tokens.pop(0)
+        with open("word_map.dat", 'w') as w:
+            pickle.dump(self.word_map, w)

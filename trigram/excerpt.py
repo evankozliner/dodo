@@ -3,7 +3,7 @@ import random
 class Excerpt:
     def __init__(self, training_set):
         self.training_set = training_set
-        self.result = []
+        self.result = None
 
     def _bootstrap_result(self):
         self.result += self.training_set.random_duple()
@@ -32,6 +32,7 @@ class Excerpt:
     # def _finalize_result(self):
 
     def generate(self, word_count):
+        self.result = []
         self._bootstrap_result()
         while len(self.result) < word_count:
             self._add_word()

@@ -1,6 +1,8 @@
+import random
 from training_set import TrainingSet
 from excerpt import Excerpt
 
 train_set = TrainingSet('tweets.txt')
 excerpt = Excerpt(train_set)
-print " ".join(excerpt.generate(15))
+for i in xrange(5):
+    print " ".join(excerpt.generate(random.randint(5, 30)))
