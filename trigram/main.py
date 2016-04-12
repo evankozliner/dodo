@@ -1,8 +1,9 @@
-import random
+import re
 from training_set import TrainingSet
 from excerpt import Excerpt
 
-train_set = TrainingSet('tweets.txt')
+train_set = TrainingSet('input.txt')
 excerpt = Excerpt(train_set)
-for i in xrange(5):
-    print " ".join(excerpt.generate(random.randint(5, 30)))
+tweets = " ".join(excerpt.generate(1000)).split(' --------- ')
+tweets = [tweet for tweet in tweets if re.match('---------', tweet) is None and len(tweet) >= 20 and len(tweet) <= 140]
+print "\n---------\n".join(tweets)
